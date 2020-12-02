@@ -7,14 +7,14 @@ miro.onReady(() => {
                 title: 'Calc with Jupiter',
                 svgIcon: icon24,
                 onClick: () => {
-                    iterationSelection({
-                            calculatedFromText: true,
-                            whiteList: ['Java', 'JavaScript']
-                        },
-                        {
-                            'STICKER': stickerProcessor,
-                            'CARD': cardProcessor
-                        }).then(function(calcResult) {
+                    let settings = {
+                        serverUrl: "https://14fdc9b7b82d.ngrok.io/",
+                        tokenParam: "?token=",
+                        token: "b06167b16cb1bcbce923f517730f78242c5ca3d191de3ec5",
+                        imagesPath: "files/"
+                    };
+
+                    createImageWidget(settings, "hackaton1.jpg").then(function(calcResult) {
                         console.log('Result: ', calcResult)
                     });
                 },

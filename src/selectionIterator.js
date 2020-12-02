@@ -153,3 +153,14 @@ function cardProcessor(widget, tags, result, settings) {
     // Now calculation is the same for cards and stickers
     return stickerProcessor(widget, tags, result, settings);
 }
+
+async function createImageWidget(settings, imageName) {
+    let imageUrl = settings.serverUrl + settings.imagesPath + imageName + settings.tokenParam + settings.token;
+    return miro.board.widgets.create({
+        type: 'image',
+        url: imageUrl,
+        scale: 1.0,
+        x: 0,
+        y: 0
+    })
+}
