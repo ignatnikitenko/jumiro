@@ -1,5 +1,5 @@
 iterationSelection({
-    calculatedFromTitle: true
+        calculatedFromText: true
     },
     {
         'STICKER': stickerProcessor,

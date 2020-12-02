@@ -14,8 +14,8 @@ function calcWidgetCosts(widget, tags, settings) {
         tags: []
     };
     var amounts = [];
-    if (defValue(settings.calculatedFromTitle, false)) {
-        var widgetText = getWidgetText(widget.text);
+    if (defValue(settings.calculatedFromText, false)) {
+        var widgetText = getWidgetText(defValue(widget.text, widget.title));
         var widgetAmount = Number(widgetText);
         if (!isNaN(widgetAmount)) {
             amounts.push(widgetAmount);
@@ -25,7 +25,7 @@ function calcWidgetCosts(widget, tags, settings) {
         try {
             var curTagTitle = tags[tagNo].title
             var curTagResult = Number(curTagTitle);
-            if (!isNaN(curTagResult)) {
+            if (!isNaN(curTagResult) && !defValue(settings.calculatedFromText, false)) {
                 amounts.push(curTagResult);
             } else {
                 result.tags.push(curTagTitle);
