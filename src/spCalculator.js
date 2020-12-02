@@ -1,5 +1,6 @@
 iterationSelection({
-        calculatedFromText: true
+        calculatedFromText: true,
+        whiteList: ['Java', 'JavaScript']
     },
     {
         'STICKER': stickerProcessor,

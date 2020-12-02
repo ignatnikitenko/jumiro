@@ -14,6 +14,7 @@ function calcWidgetCosts(widget, tags, settings) {
         tags: []
     };
     var amounts = [];
+    // Getting amount from widget text
     if (defValue(settings.calculatedFromText, false)) {
         var widgetText = getWidgetText(defValue(widget.text, widget.title));
         var widgetAmount = Number(widgetText);
@@ -21,6 +22,7 @@ function calcWidgetCosts(widget, tags, settings) {
             amounts.push(widgetAmount);
         }
     }
+    var hasNoWhiteList = defValue(settings.whiteList, null) === null;
     for (var tagNo in tags) {
         try {
             var curTagTitle = tags[tagNo].title
@@ -28,7 +30,16 @@ function calcWidgetCosts(widget, tags, settings) {
             if (!isNaN(curTagResult) && !defValue(settings.calculatedFromText, false)) {
                 amounts.push(curTagResult);
             } else {
-                result.tags.push(curTagTitle);
+                if (hasNoWhiteList) {
+                    result.tags.push(curTagTitle);
+                } else {
+                    for (var word in settings.whiteList) {
+                        if (settings.whiteList[word].toLowerCase() === curTagTitle.toLowerCase()) {
+                            result.tags.push(curTagTitle);
+                            break;
+                        }
+                    }
+                }
             }
         } catch (e) {
             // Nothing to to in case of errors
@@ -76,7 +87,11 @@ function stickerProcessor(widget, tags, result, settings) {
     for (var tagNo in widgetCost.tags) {
         var tagName = widgetCost.tags[tagNo];
         var tagAmount = defValue(result.groupedResult[tagName], 0);
-        tagAmount += (widgetCost.amount / tagCount);
+        if (defValue(settings.distributedAmounts, false)) {
+            tagAmount += (widgetCost.amount / tagCount);
+        } else {
+            tagAmount += (widgetCost.amount);
+        }
         result.groupedResult[tagName] = tagAmount
     }
     return result;
