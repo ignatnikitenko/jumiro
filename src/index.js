@@ -14,7 +14,7 @@ miro.onReady(() => {
                         imagesPath: "files/"
                     };
 
-                    createNotebook(settings, "hackaton2").then(function(calcResult) {
+                    createNotebook(settings, "hack2").then(function(calcResult) {
                         console.log('createNotebook: ', calcResult)
                     });
 
