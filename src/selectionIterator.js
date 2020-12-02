@@ -164,3 +164,74 @@ async function createImageWidget(settings, imageName) {
         y: 0
     })
 }
+
+async function createNotebook(settings, name, texts) {
+    let notebookJson = formNotebookJson(settings, name, texts);
+    let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
+        fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(notebookJson)
+            })
+        .then(response => response.json())
+        //.then(data => console.log(data.content.cells[0].outputs[1].data["image/png"]));
+}
+
+function formNotebookJson(settings, name, texts) {
+    return {
+        "name": name + ".ipynb",
+        "path": name + ".ipynb",
+        "last_modified": "2020-12-02T13:27:15.087556Z",
+        "created": "2020-12-02T13:27:15.087556Z",
+        "content": {
+            "cells": [
+                {
+                    "cell_type": "code",
+                    "execution_count": 16,
+                    "metadata": {
+                        "trusted": true
+                    },
+                    "outputs": [],
+                    "source": "sum = 20000\npercent = 12\nmonths = 240\nyears = int(months / 12)\nmonthly = percent / 12 / 100\n\nimport pylab\nimport numpy as np\n\nx = np.linspace(0, months, years)\ny = sum * np.power(1 + monthly, x) \n\n\npylab.plot(x, y, 'rs')\npylab.savefig('hackaton1.png')"
+                },
+                {
+                    "cell_type": "code",
+                    "execution_count": 10,
+                    "metadata": {
+                        "trusted": true
+                    },
+                    "outputs": [],
+                    "source": "finalSum=sum * np.power(1 + monthly, months)\nprint(finalSum)"
+                }
+            ],
+            "metadata": {
+                "kernelspec": {
+                    "display_name": "Python 3",
+                    "language": "python",
+                    "name": "python3"
+                },
+                "language_info": {
+                    "codemirror_mode": {
+                        "name": "ipython",
+                        "version": 3
+                    },
+                    "file_extension": ".py",
+                    "mimetype": "text/x-python",
+                    "name": "python",
+                    "nbconvert_exporter": "python",
+                    "pygments_lexer": "ipython3",
+                    "version": "3.8.6"
+                }
+            },
+            "nbformat": 4,
+            "nbformat_minor": 4
+        },
+        "format": "json",
+        "mimetype": null,
+        "size": 10790,
+        "writable": true,
+        "type": "notebook"
+    }
+};

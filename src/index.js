@@ -14,8 +14,12 @@ miro.onReady(() => {
                         imagesPath: "files/"
                     };
 
+                    createNotebook(settings, "hackaton2").then(function(calcResult) {
+                        console.log('createNotebook: ', calcResult)
+                    });
+
                     createImageWidget(settings, "hackaton1.jpg").then(function(calcResult) {
-                        console.log('Result: ', calcResult)
+                        console.log('createImageWidget: ', calcResult)
                     });
                 },
             },
