@@ -1,4 +1,4 @@
-function calcWidgetCosts(tags) {
+function calcWidgetCosts(curWidget, tags, settings) {
     var result = {
         amount: 0,
         tags: []
@@ -33,31 +33,28 @@ function iterationSelection(settings, processors) {
     };
 
     var selectionPromise = miro.board.selection.get();
-    selectionPromise.then(function(foundWidgets) {
+    return selectionPromise.then(function(foundWidgets) {
         var widgetCount = foundWidgets.length;
         var processResult = result;
         for (var widgetNo = 0; widgetNo < widgetCount; widgetNo++) {
             var currentWidget = foundWidgets[widgetNo];
             var curWidgetProcessor = processors[currentWidget.type];
-            debugger;
             if (typeof curWidgetProcessor !== 'undefined') {
                 var tags = currentWidget.tags;
-                processResult = curWidgetProcessor(currentWidget, tags, processResult);
+                processResult = curWidgetProcessor(currentWidget, tags, processResult, settings);
             }
         }
         return processResult;
     }, function() {
         console.log('Error');
         return result;
-    }).then(function(calcResult) {
-        console.log('Result ', calcResult)
     });
 }
 
 iterationSelection({},
     {
-        'STICKER': function(widget, tags, result) {
-            var widgetCost = calcWidgetCosts(tags);
+        'STICKER': function(widget, tags, result, settings) {
+            var widgetCost = calcWidgetCosts(widget, tags, settings);
             result.totalResult += widgetCost.amount;
             var tagCount = widgetCost.tags.length;
             for (var tagNo in widgetCost.tags) {
@@ -71,7 +68,9 @@ iterationSelection({},
             }
             return result;
         }
-    });
+    }).then(function(calcResult) {
+        console.log('Result: ', calcResult)
+});
 
 iterationSelection({}, {
     'STICKER': function (widget, tags, result) {
@@ -82,4 +81,6 @@ iterationSelection({}, {
         console.log('Found widget ', widget.id, widget.type, tagNames);
         return result;
     }
+}).then(function(calcResult) {
+    console.log(calcResult);
 });
