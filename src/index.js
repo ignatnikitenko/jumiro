@@ -10,7 +10,7 @@ miro.onReady(() => {
                     let settings = {
                         serverUrl: "https://14fdc9b7b82d.ngrok.io/",
                         tokenParam: "?token=",
-                        token: "b06167b16cb1bcbce923f517730f78242c5ca3d191de3ec5",
+                        token: "4c08c5e6c064eecb775e0459934fd76784a53736a3e84968",
                         imagesPath: "files/"
                     };
 
