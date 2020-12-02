@@ -1,9 +1,26 @@
-function calcWidgetCosts(curWidget, tags, settings) {
+function defValue(rawValue, defaultValue) {
+    return typeof rawValue === 'undefined' ? defaultValue : rawValue;
+}
+
+function getWidgetText(rawText) {
+    var d = document.createElement('div');
+    d.innerHTML = rawText;
+    return d.innerText;
+}
+
+function calcWidgetCosts(widget, tags, settings) {
     var result = {
         amount: 0,
         tags: []
     };
     var amounts = [];
+    if (defValue(settings.calculatedFromTitle, false)) {
+        var widgetText = getWidgetText(widget.text);
+        var widgetAmount = Number(widgetText);
+        if (!isNaN(widgetAmount)) {
+            amounts.push(widgetAmount);
+        }
+    }
     for (var tagNo in tags) {
         try {
             var curTagTitle = tags[tagNo].title
@@ -58,12 +75,8 @@ function stickerProcessor(widget, tags, result, settings) {
     var tagCount = widgetCost.tags.length;
     for (var tagNo in widgetCost.tags) {
         var tagName = widgetCost.tags[tagNo];
-        var tagAmount = result.groupedResult[tagName];
-        if (typeof tagAmount === 'undefined') {
-            tagAmount = (widgetCost.amount / tagCount);
-        } else {
-            tagAmount += (widgetCost.amount / tagCount);
-        }
+        var tagAmount = defValue(result.groupedResult[tagName], 0);
+        tagAmount += (widgetCost.amount / tagCount);
         result.groupedResult[tagName] = tagAmount
     }
     return result;

@@ -1,4 +1,6 @@
-iterationSelection({},
+iterationSelection({
+    calculatedFromTitle: true
+    },
     {
         'STICKER': stickerProcessor,
         'CARD': cardProcessor
