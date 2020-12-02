@@ -167,7 +167,7 @@ async function createImageWidget(settings, imageName) {
 
 async function createNotebook(settings, name, texts) {
     let notebookJson = formNotebookJson(settings, name, texts);
-    let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
+    let url = settings.serverUrl + "api/contents" + settings.tokenParam + settings.token
         fetch(url, {
                 method: "POST",
                 headers: {
