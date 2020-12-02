@@ -17,8 +17,9 @@ function calcWidgetCosts(curWidget, tags, settings) {
             // Nothing to to in case of errors
         }
     }
+    // Sort amounts (from bigger to smaller)
     amounts.sort(function(a, b) {
-        return a-b;
+        return b-a;
     });
     if (amounts.length > 0) {
         result.amount = amounts[0];
@@ -51,36 +52,24 @@ function iterationSelection(settings, processors) {
     });
 }
 
-iterationSelection({},
-    {
-        'STICKER': function(widget, tags, result, settings) {
-            var widgetCost = calcWidgetCosts(widget, tags, settings);
-            result.totalResult += widgetCost.amount;
-            var tagCount = widgetCost.tags.length;
-            for (var tagNo in widgetCost.tags) {
-                var tagName = widgetCost.tags[tagNo];
-                var oldTagAmount = result.groupedResult[tagName];
-                if (typeof oldTagAmount === 'undefined') {
-                    result.groupedResult[tagName] = (widgetCost.amount / tagCount);
-                } else {
-                    result.groupedResult[tagName] += (widgetCost.amount / tagCount);
-                }
-            }
-            return result;
+function stickerProcessor(widget, tags, result, settings) {
+    var widgetCost = calcWidgetCosts(widget, tags, settings);
+    result.totalResult += widgetCost.amount;
+    var tagCount = widgetCost.tags.length;
+    for (var tagNo in widgetCost.tags) {
+        var tagName = widgetCost.tags[tagNo];
+        var tagAmount = result.groupedResult[tagName];
+        if (typeof tagAmount === 'undefined') {
+            tagAmount = (widgetCost.amount / tagCount);
+        } else {
+            tagAmount += (widgetCost.amount / tagCount);
         }
-    }).then(function(calcResult) {
-        console.log('Result: ', calcResult)
-});
-
-iterationSelection({}, {
-    'STICKER': function (widget, tags, result) {
-        var tagNames = [];
-        for (var tagNo = 0; tagNo < tags.length; tagNo++) {
-            tagNames.push(tags[tagNo].title);
-        }
-        console.log('Found widget ', widget.id, widget.type, tagNames);
-        return result;
+        result.groupedResult[tagName] = tagAmount
     }
-}).then(function(calcResult) {
-    console.log(calcResult);
-});
+    return result;
+}
+
+function cardProcessor(widget, tags, result, settings) {
+    // Now calculation is the same for cards and stickers
+    return stickerProcessor(widget, tags, result, settings);
+}
