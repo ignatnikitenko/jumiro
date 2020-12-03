@@ -14,8 +14,7 @@ miro.onReady(() => {
                         imagesPath: "files/"
                     };
 
-                    createNotebook(settings, "hack2", ["print(1+1)", "print(2+2)", "print(3+3)"])
-                        .then(function(calcResult) {
+                    createNotebook(settings).then(function(calcResult) {
                             console.log('createNotebook: ', calcResult)
                         });
 

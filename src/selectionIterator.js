@@ -165,17 +165,19 @@ async function createImageWidget(settings, imageName) {
     })
 }
 
-async function createNotebook(settings, name) {
-    let notebookJson = formNotebookJson(settings, name, getCellSources());
-    let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
-        fetch(url, {
+async function createNotebook(settings) {
+    return getCellSources().then(cellSources => {
+        let name = "hakaton";
+        let notebookJson = formNotebookJson(settings, name, cellSources);
+        let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
+        return fetch(url, {
                 method: "PUT",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(notebookJson)
             })
-        .then(response => response.json())
+    })
 }
 
 async function getCellSources() {
