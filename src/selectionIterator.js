@@ -185,7 +185,18 @@ function formNotebookJson(settings, name, texts) {
         "last_modified": "2020-12-02T19:32:49Z",
         "created": "2020-12-02T19:32:49Z",
         "content": {
-            "cells": [],
+            "cells": [
+                {
+                    "cell_type": "code",
+                    "execution_count": 1,
+                    "metadata": {
+                        "scrolled": true,
+                        "trusted": true
+                    },
+                    "outputs": [],
+                    "source": "print(2+2)"
+                }
+            ],
             "metadata": {},
             "nbformat": 4,
             "nbformat_minor": 4
