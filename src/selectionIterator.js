@@ -47,6 +47,9 @@ async function getCellSources() {
             .map(widget => widget.text)
             .sort()
             .flatMap(code => prepareSource(code))
+            .join(
+"\
+")
         );
 }
 
@@ -60,6 +63,7 @@ function prepareSource(source) {
         .filter(str => str.length > 0);
 }
 
+/*
 function formNotebookJson(settings, name, cellSources) {
     cellSources = cellSources.map(cellSource => formCell(cellSource));
     let date = new Date().toJSON();
@@ -93,3 +97,4 @@ function formCell(cellSource) {
         "source": cellSource
     }
 }
+ */
