@@ -191,8 +191,8 @@ async function getCellSources() {
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","\r\n")
-        .replaceAll("<br />", "\r\n")
+        .replaceAll("</p><p>","\\n")
+        .replaceAll("<br />", "\\n")
         .replace("<p>","")
         .replace("</p>", "");
 }
