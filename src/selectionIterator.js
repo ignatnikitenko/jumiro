@@ -167,7 +167,7 @@ async function createImageWidget(settings, imageName) {
 
 async function createNotebook(settings) {
     return getCellSources().then(cellSources => {
-        let name = "hakaton";
+        let name = "hackaton";
         let notebookJson = formNotebookJson(settings, name, cellSources);
         let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
         return fetch(url, {
@@ -190,8 +190,11 @@ async function getCellSources() {
 }
 
 function prepareSource(source) {
-    return source.replaceAll("</p><p>","\\n").replaceAll("<br>", "\\n")
-        .replace("<p>","").replace("</p>", "");
+    return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+        .replaceAll("</p><p>","\\n")
+        .replaceAll("<br />", "\\n")
+        .replace("<p>","")
+        .replace("</p>", "");
 }
 
 function formNotebookJson(settings, name, cellSources) {
