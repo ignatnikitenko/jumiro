@@ -10,21 +10,15 @@ miro.onReady(() => {
                     let settings = {
                         serverUrl: "https://14fdc9b7b82d.ngrok.io/",
                         tokenParam: "?token=",
-                        token: "246f547492cac1f9f8f5cca9c8f76d88acf334cdda674859",
+                        token: "72fd9a01c6513d2a248818648633997d967c4a2f2fd30591",
                         imagesPath: "files/"
                     };
 
                     createNotebook(settings).then(function(calcResult) {
                             console.log('createNotebook: ', calcResult)
                         });
-
-                    /*
-                    createImageWidget(settings, "hackaton1.jpg").then(function(calcResult) {
-                        console.log('createImageWidget: ', calcResult)
-                    });
-                     */
-                },
-            },
-        },
+                }
+            }
+        }
     })
 })
