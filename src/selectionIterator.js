@@ -190,7 +190,7 @@ async function getCellSources() {
 }
 
 function prepareSource(source) {
-    return JSON.parse(source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+    return JSON.stringify(source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
         .replaceAll("</p><p>","\n")
         .replaceAll("<br />", "\n")
         .replace("<p>","")
