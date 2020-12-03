@@ -185,15 +185,15 @@ async function getCellSources() {
         .then(widgets => widgets
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
             // .map(widget => prepareSource(widget.text))
-            .map(widget => prepareSource(widget.plainText))
+            .map(widget => widget.plainText)
             .sort()
         );
 }
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","↵")
-        .replaceAll("<br />", "↵")
+        .replaceAll("</p><p>","\n")
+        .replaceAll("<br />", "\n")
         .replace("<p>","")
         .replace("</p>", "");
 }
