@@ -183,9 +183,10 @@ async function executeCode(code, stdoutResultFunc, mediaResultFunc) {
                 console.log("output:" + data.content.name + ":" + data.content.text);
                 if (data.content.name === "stdout") {
                     stdoutResultFunc.call(this, data.content.text);
-                } else {
-                    mediaResultFunc.call(this, data.content);
                 }
+                break;
+            case 'display_data':
+                mediaResultFunc.call(this, data.content);
                 break;
             case 'execute_reply':
                 showReply(data.content.status);
