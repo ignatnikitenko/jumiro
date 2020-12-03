@@ -221,7 +221,9 @@ function getKernelSpecs(code) {
             createNewKernel(await response.json(), code);
         })
 }
-
+/*
 document.getElementById('execute').onclick = function () {
     getKernelSpecs(document.getElementById('pythonText').value);
 }
+
+ */

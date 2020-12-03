@@ -166,11 +166,12 @@ async function createImageWidget(settings, imageName) {
 }
 
 async function createNotebook(settings) {
-    return getCellSources().then(cellSources => {
-        let cellSource = cellSources[0];
-        console.log(cellSource);
-        getKernelSpecs(cellSource);
-        /*
+    await cellSources = getCellSources();
+    for (let cellSource in cellSources) {
+        console.log("Calculate:" + cellSource);
+        await getKernelSpecs(cellSource);
+    }
+    /*
         let name = "hackaton";
         let notebookJson = formNotebookJson(settings, name, cellSources);
         let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
@@ -181,9 +182,8 @@ async function createNotebook(settings) {
                 },
                 body: JSON.stringify(notebookJson)
             })
-
-         */
     })
+    */
 }
 
 async function getCellSources() {
@@ -197,7 +197,7 @@ async function getCellSources() {
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replace(/#IN\[(\d+)]/g, "")
+        .replace(/#IN\[(\d+)]:/g, "")
         .replaceAll("</p><p>","\\n")
         .replaceAll("<br />", "\\n")
         .replace("<p>","")
