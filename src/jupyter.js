@@ -1,7 +1,7 @@
 // Settings
 
 
-var baseUrl = 'http://14fdc9b7b82d.ngrok.io';
+var baseUrl = 'https://14fdc9b7b82d.ngrok.io';
 //var baseUrl = 'http://localhost:8888';
 var baseWsUrl = 'ws://14fdc9b7b82d.ngrok.io';
 //var baseWsUrl = 'ws://localhost:8888';
