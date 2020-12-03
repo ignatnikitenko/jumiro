@@ -9,11 +9,22 @@ async function createImageWidget(settings, imageName) {
     })
 }
 
+async function createStickerWidget(text) {
+    return miro.board.widgets.create({
+        type: 'sticker',
+        text: text,
+        meta: { jupyterOutput: true }
+    })
+}
+
 async function createNotebook(settings) {
     let cellSources = await getCellSources();
-    for (let cellSource of cellSources) {
+    let cellCount = cellSources.length;
+    for (var i = 0 ; i < cellCount; i++) {
+        var cellSource = cellSources[i];
         console.log("Calculate:" + cellSource);
-        await executeCode(cellSource);
+        await executeCode(cellSource, createStickerWidget);
+        await new Promise(r => setTimeout(r, 200));
     }
     /*
         let name = "hackaton";
@@ -34,14 +45,15 @@ async function getCellSources() {
     return miro.board.widgets.get()
         .then(widgets => widgets
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
-            //.sort()
-            .map(widget => prepareSource(widget.text))
+            .map(widget => widget.text)
+            .sort()
+            .map(code => prepareSource(code))
         );
 }
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replace(/#IN\[(\d+)]:/g, "")
+        .replace(/#IN\[(\d+)]:\\n/g, "")
         .replaceAll("</p><p>","\\n")
         .replaceAll("<br />", "\\n")
         .replace("<p>","")

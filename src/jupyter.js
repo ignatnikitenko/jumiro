@@ -109,14 +109,9 @@ function showInput(input) {
     //document.getElementById('input').innerText = input;
 }
 
-function addToStream(name, text) {
-    console.log("output:" + text);
-    /*
-    var $element = document.getElementById('output');
-    var newText = $element.innerText;
-    newText += text;
-    $element.innerText = newText;
-     */
+function processOutput(name, text) {
+    console.log("output:" + name + ":" + text);
+
 }
 
 function showReply(reply) {
@@ -148,7 +143,8 @@ function sendMessage(socket, code) {
     socket.send(serialize(msg));
 }
 
-async function executeCode(code) {
+async function executeCode(code, stdoutResultFunc) {
+
     if (!kernel) {
         await initKernelSpec();
         await initKernel();
@@ -184,7 +180,7 @@ async function executeCode(code) {
                 showInput(data.content.code);
                 break;
             case 'stream':
-                addToStream(data.content.name, data.content.text);
+                processOutput(data.content.name, data.content.text);
                 break;
             case 'execute_reply':
                 showReply(data.content.status);
