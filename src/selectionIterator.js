@@ -196,13 +196,12 @@ async function getCellSources() {
 }
 
 function prepareSource(source) {
-    let str = source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+    return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+        .replace(/#IN\[(\d+)]/g, "")
         .replaceAll("</p><p>","\\n")
         .replaceAll("<br />", "\\n")
         .replace("<p>","")
         .replace("</p>", "");
-    //console.log(str);
-    return str;
 }
 
 function formNotebookJson(settings, name, cellSources) {
