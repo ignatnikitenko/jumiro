@@ -184,7 +184,8 @@ async function getCellSources() {
     return miro.board.widgets.get()
         .then(widgets => widgets
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
-            .map(widget => prepareSource(widget.text))
+            // .map(widget => prepareSource(widget.text))
+            .map(widget => prepareSource(widget.plainText))
             .sort()
         );
 }
