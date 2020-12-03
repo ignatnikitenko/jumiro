@@ -143,7 +143,7 @@ function sendMessage(socket, code) {
     socket.send(serialize(msg));
 }
 
-async function executeCode(code, stdoutResultFunc) {
+async function executeCode(code, stdoutResultFunc, mediaResultFunc) {
 
     if (!kernel) {
         await initKernelSpec();
@@ -182,7 +182,9 @@ async function executeCode(code, stdoutResultFunc) {
             case 'stream':
                 console.log("output:" + data.content.name + ":" + data.content.text);
                 if (data.content.name === "stdout") {
-                    stdoutResultFunc.call(data.content.text)
+                    stdoutResultFunc.call(this, data.content.text);
+                } else {
+                    mediaResultFunc.call(this, data.content);
                 }
                 break;
             case 'execute_reply':
@@ -226,6 +228,8 @@ async function initKernel(kernelSpec) {
     console.log("Kernel created: " + JSON.stringify(kernel));
 }
 
+/*
 document.getElementById('execute').onclick = async function () {
     executeCode(document.getElementById('pythonText').value);
 }
+ */

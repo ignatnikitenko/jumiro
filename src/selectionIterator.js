@@ -22,7 +22,7 @@ async function createNotebook(settings) {
     for (var i = 0 ; i < cellCount; i++) {
         var cellSource = cellSources[i];
         console.log("Calculate:" + cellSource);
-        await executeCode(cellSource, createStickerWidget);
+        await executeCode(cellSource, createStickerWidget, function() { createImageWidget(settings, 'hackaton1.png')});
         await new Promise(r => setTimeout(r, 200));
     }
     /*
@@ -46,17 +46,18 @@ async function getCellSources() {
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
             .map(widget => widget.text)
             .sort()
-            .map(code => prepareSource(code))
+            .flatMap(code => prepareSource(code))
         );
 }
 
 function prepareSource(source) {
-    return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replace(/#IN\[(\d+)]:/g, "")
-        .replaceAll("</p><p>","")
-        .replaceAll("<br />", "")
-        .replace("<p>","")
-        .replace("</p>", "");
+    let str = source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+        .replace(/#IN\[(\d+)]:/g, "");
+    return str
+        .split("<br />")
+        .flatMap(str => str.split("</p><p>"))
+        .flatMap(str => str.replace("<p>","").replace("</p>", ""))
+        .filter(str => str.length > 0);
 }
 
 function formNotebookJson(settings, name, cellSources) {
