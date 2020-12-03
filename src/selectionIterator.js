@@ -201,7 +201,7 @@ function prepareSource(source) {
         .replaceAll("<br />", "\\n")
         .replace("<p>","")
         .replace("</p>", "");
-    console.log(str);
+    //console.log(str);
     return str;
 }
 

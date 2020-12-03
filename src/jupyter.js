@@ -99,22 +99,28 @@ function serialize(msg) {
 }
 
 function showStatus(status) {
-    document.getElementById('status').innerText = status;
+    console.log("status:" + status);
+    //document.getElementById('status').innerText = status;
 }
 
 function showInput(input) {
-    document.getElementById('input').innerText = input;
+    console.log("input:" + input);
+    //document.getElementById('input').innerText = input;
 }
 
 function addToStream(name, text) {
+    console.log("output:" + text);
+    /*
     var $element = document.getElementById('output');
     var newText = $element.innerText;
     newText += text;
     $element.innerText = newText;
+     */
 }
 
-function showReply(status) {
-    document.getElementById('result').innerText = status;
+function showReply(reply) {
+    console.log("result:" + reply);
+    //document.getElementById('result').innerText = status;
 }
 
 function sendMessage(socket, code) {
