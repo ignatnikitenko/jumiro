@@ -10,17 +10,20 @@ miro.onReady(() => {
                     let settings = {
                         serverUrl: "https://14fdc9b7b82d.ngrok.io/",
                         tokenParam: "?token=",
-                        token: "4c08c5e6c064eecb775e0459934fd76784a53736a3e84968",
+                        token: "246f547492cac1f9f8f5cca9c8f76d88acf334cdda674859",
                         imagesPath: "files/"
                     };
 
-                    createNotebook(settings, "hack2").then(function(calcResult) {
-                        console.log('createNotebook: ', calcResult)
-                    });
+                    createNotebook(settings, "hack2", ["print(1+1)", "print(2+2)", "print(3+3)"])
+                        .then(function(calcResult) {
+                            console.log('createNotebook: ', calcResult)
+                        });
 
+                    /*
                     createImageWidget(settings, "hackaton1.jpg").then(function(calcResult) {
                         console.log('createImageWidget: ', calcResult)
                     });
+                     */
                 },
             },
         },

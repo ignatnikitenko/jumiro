@@ -165,8 +165,8 @@ async function createImageWidget(settings, imageName) {
     })
 }
 
-async function createNotebook(settings, name, texts) {
-    let notebookJson = formNotebookJson(settings, name, texts);
+async function createNotebook(settings, name, cellSources) {
+    let notebookJson = formNotebookJson(settings, name, cellSources);
     let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
         fetch(url, {
                 method: "PUT",
@@ -178,25 +178,15 @@ async function createNotebook(settings, name, texts) {
         .then(response => response.json())
 }
 
-function formNotebookJson(settings, name, texts) {
+function formNotebookJson(settings, name, cellSources) {
+    cellSources = cellSources.map(cellSource => formCell(cellSource));
     return {
         "name": name + ".ipynb",
         "path": name + ".ipynb",
         "last_modified": "2020-12-02T19:32:49Z",
         "created": "2020-12-02T19:32:49Z",
         "content": {
-            "cells": [
-                {
-                    "cell_type": "code",
-                    "execution_count": 1,
-                    "metadata": {
-                        "scrolled": true,
-                        "trusted": true
-                    },
-                    "outputs": [],
-                    "source": "print(2+2)"
-                }
-            ],
+            "cells": cellSources,
             "metadata": {},
             "nbformat": 4,
             "nbformat_minor": 4
@@ -207,4 +197,31 @@ function formNotebookJson(settings, name, texts) {
         "writable": true,
         "type": "notebook"
     }
-};
+}
+
+function formCell(cellSource) {
+    return {
+        "cell_type": "code",
+        "execution_count": null,
+        "metadata": {
+            "trusted": true
+        },
+        "outputs": [],
+        "source": cellSource
+    }
+}
+
+/*
+// createSession
+fetch("https://14fdc9b7b82d.ngrok.io/api/sessions?token=4c08c5e6c064eecb775e0459934fd76784a53736a3e84968", {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+        "path": "hack2.ipynb",
+        "name": "hack2.ipynb",
+        "type": "notebook"
+    })
+})
+ */
