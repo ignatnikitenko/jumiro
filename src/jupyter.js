@@ -5,9 +5,10 @@ var baseUrl = 'https://14fdc9b7b82d.ngrok.io';
 //var baseUrl = 'http://localhost:8888';
 var baseWsUrl = 'wss://14fdc9b7b82d.ngrok.io';
 //var baseWsUrl = 'ws://localhost:8888';
-var token = '246f547492cac1f9f8f5cca9c8f76d88acf334cdda674859';
+var token = '72fd9a01c6513d2a248818648633997d967c4a2f2fd30591';
 
-
+var kernelSpec;
+var kernel;
 var kernelName = 'python';
 var options = {
     clientId: uuid(),
@@ -147,11 +148,16 @@ function sendMessage(socket, code) {
     socket.send(serialize(msg));
 }
 
-function execute(kernelInfo, code) {
+async function executeCode(code) {
+    if (!kernel) {
+        await initKernelSpec();
+        await initKernel();
+    }
+
     let socket = options.socket;
     var oldSocket = false;
     if (socket === null) {
-        socket = new WebSocket(baseWsUrl + '/api/kernels/' + kernelInfo.id + '/channels?session_id=' + options.clientId + '&token=' + token);
+        socket = new WebSocket(baseWsUrl + '/api/kernels/' + kernel.id + '/channels?session_id=' + options.clientId + '&token=' + token);
         options.socket = socket;
     } else {
         oldSocket = true;
@@ -199,31 +205,28 @@ function execute(kernelInfo, code) {
     };
 }
 
-function createNewKernel(kernelSpec, code) {
-    console.log('Kernel spec ', kernelSpec);
-    var data = {
+async function initKernelSpec() {
+    let res = await fetch(getUrl('/api/kernelspecs'));
+    kernelSpec = await res.json();
+    console.log("KernelSpec created: " + JSON.stringify(kernelSpec));
+}
+
+// TODO: use existing kernel
+async function initKernel(kernelSpec) {
+    let data = {
         name: kernelName
     }
-    fetch(getUrl('/api/kernels'), {
+    let res = await fetch(getUrl('/api/kernels'), {
         method: 'POST', // или 'PUT'
         body: JSON.stringify(data), // данные могут быть 'строкой' или {объектом}!
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(async function (response) {
-        execute(await response.json(), code);
-    });
+    })
+    kernel = await res.json();
+    console.log("Kernel created: " + JSON.stringify(kernel));
 }
 
-function getKernelSpecs(code) {
-    fetch(getUrl('/api/kernelspecs'))
-        .then(async function (response) {
-            createNewKernel(await response.json(), code);
-        })
+document.getElementById('execute').onclick = async function () {
+    executeCode(document.getElementById('pythonText').value);
 }
-/*
-document.getElementById('execute').onclick = function () {
-    getKernelSpecs(document.getElementById('pythonText').value);
-}
-
- */
