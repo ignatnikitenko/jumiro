@@ -52,9 +52,9 @@ async function getCellSources() {
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replace(/#IN\[(\d+)]:\\n/g, "")
-        .replaceAll("</p><p>","\\n")
-        .replaceAll("<br />", "\\n")
+        .replace(/#IN\[(\d+)]:/g, "")
+        .replaceAll("</p><p>","")
+        .replaceAll("<br />", "")
         .replace("<p>","")
         .replace("</p>", "");
 }
