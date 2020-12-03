@@ -47,9 +47,7 @@ async function getCellSources() {
             .map(widget => widget.text)
             .sort()
             .flatMap(code => prepareSource(code))
-            .join(
-"\
-")
+            .join('\n')
         );
 }
 
