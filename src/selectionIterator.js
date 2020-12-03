@@ -165,8 +165,8 @@ async function createImageWidget(settings, imageName) {
     })
 }
 
-async function createNotebook(settings, name, cellSources) {
-    let notebookJson = formNotebookJson(settings, name, cellSources);
+async function createNotebook(settings, name) {
+    let notebookJson = formNotebookJson(settings, name, getCellSources());
     let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
         fetch(url, {
                 method: "PUT",
@@ -178,13 +178,28 @@ async function createNotebook(settings, name, cellSources) {
         .then(response => response.json())
 }
 
+async function getCellSources() {
+    return miro.board.widgets.get()
+        .then(widgets => widgets
+            .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
+            .map(widget => prepareSource(widget.text))
+            .sort()
+        );
+}
+
+function prepareSource(source) {
+    return source.replaceAll("</p><p>","\\n").replaceAll("<br>", "\\n")
+        .replace("<p>","").replace("</p>", "");
+}
+
 function formNotebookJson(settings, name, cellSources) {
     cellSources = cellSources.map(cellSource => formCell(cellSource));
+    let date = new Date().toJSON();
     return {
         "name": name + ".ipynb",
         "path": name + ".ipynb",
-        "last_modified": "2020-12-02T19:32:49Z",
-        "created": "2020-12-02T19:32:49Z",
+        "last_modified": date,
+        "created": date,
         "content": {
             "cells": cellSources,
             "metadata": {},
@@ -210,18 +225,3 @@ function formCell(cellSource) {
         "source": cellSource
     }
 }
-
-/*
-// createSession
-fetch("https://14fdc9b7b82d.ngrok.io/api/sessions?token=4c08c5e6c064eecb775e0459934fd76784a53736a3e84968", {
-    method: "POST",
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        "path": "hack2.ipynb",
-        "name": "hack2.ipynb",
-        "type": "notebook"
-    })
-})
- */
