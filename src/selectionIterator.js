@@ -190,11 +190,13 @@ async function getCellSources() {
 }
 
 function prepareSource(source) {
-    return JSON.stringify(source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","\n")
-        .replaceAll("<br />", "\n")
+    let str = source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+        .replaceAll("</p><p>","\\n")
+        .replaceAll("<br />", "\\n")
         .replace("<p>","")
-        .replace("</p>", ""));
+        .replace("</p>", "");
+    console.log(str);
+    return str;
 }
 
 function formNotebookJson(settings, name, cellSources) {
@@ -230,3 +232,5 @@ function formCell(cellSource) {
         "source": cellSource
     }
 }
+
+prepareSource("#IN[2]:<br />finalSum=sum * np.power(1 + monthly, months)<br />print(finalSum)");
