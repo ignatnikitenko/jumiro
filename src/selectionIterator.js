@@ -206,7 +206,7 @@ function formNotebookJson(settings, name, cellSources) {
         "last_modified": date,
         "created": date,
         "content": {
-            "cells": cellSources,
+            "cells": JSON.parse(cellSources),
             "metadata": {},
             "nbformat": 4,
             "nbformat_minor": 4
