@@ -184,17 +184,17 @@ async function getCellSources() {
     return miro.board.widgets.get()
         .then(widgets => widgets
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
-            .map(widget => prepareSource(widget.text))
             .sort()
+            .map(widget => prepareSource(widget.text))
         );
 }
 
 function prepareSource(source) {
-    return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","↵")
-        .replaceAll("<br />", "↵")
+    return JSON.parse(source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
+        .replaceAll("</p><p>","\n")
+        .replaceAll("<br />", "\n")
         .replace("<p>","")
-        .replace("</p>", "");
+        .replace("</p>", ""));
 }
 
 function formNotebookJson(settings, name, cellSources) {
