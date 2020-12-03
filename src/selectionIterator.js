@@ -167,6 +167,10 @@ async function createImageWidget(settings, imageName) {
 
 async function createNotebook(settings) {
     return getCellSources().then(cellSources => {
+        let cellSource = cellSources[0];
+        console.log(cellSource);
+        getKernelSpecs(cellSource);
+        /*
         let name = "hackaton";
         let notebookJson = formNotebookJson(settings, name, cellSources);
         let url = settings.serverUrl + "api/contents/" + name + ".ipynb" + settings.tokenParam + settings.token
@@ -177,6 +181,8 @@ async function createNotebook(settings) {
                 },
                 body: JSON.stringify(notebookJson)
             })
+
+         */
     })
 }
 
@@ -232,5 +238,3 @@ function formCell(cellSource) {
         "source": cellSource
     }
 }
-
-prepareSource("#IN[2]:<br />finalSum=sum * np.power(1 + monthly, months)<br />print(finalSum)");

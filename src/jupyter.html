@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test vanilla JS</title>
+    <link rel="stylesheet" href="jupyter.css">
+</head>
+<body>
+<div id="app"></div>
+<label>Python:</label><br>
+<textarea id="pythonText">print(1+1)</textarea><br>
+<label>Status:</label>
+<div id="status" class="wsResult"></div>
+<label>Result:</label>
+<div id="result" class="wsResult"></div>
+<label>Input:</label>
+<div id="input" class="wsResult"></div>
+<label>Output:</label>
+<div id="output" class="wsResult"></div>
+
+<button id="execute">Execute</button>
+<button id="clear">Clear output</button>
+
+<script src="jupyter.js"></script>
+</body>
+</html>
