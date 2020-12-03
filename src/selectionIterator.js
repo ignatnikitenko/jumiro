@@ -191,8 +191,8 @@ async function getCellSources() {
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","\n")
-        .replaceAll("<br />", "\n")
+        .replaceAll("</p><p>","\r\n")
+        .replaceAll("<br />", "\r\n")
         .replace("<p>","")
         .replace("</p>", "");
 }
@@ -206,7 +206,7 @@ function formNotebookJson(settings, name, cellSources) {
         "last_modified": date,
         "created": date,
         "content": {
-            "cells": JSON.parse(cellSources),
+            "cells": cellSources,
             "metadata": {},
             "nbformat": 4,
             "nbformat_minor": 4
