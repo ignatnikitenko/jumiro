@@ -11,7 +11,7 @@ async function createImageWidget(settings, imageName) {
 
 async function createNotebook(settings) {
     let cellSources = await getCellSources();
-    for (let cellSource in cellSources) {
+    for (let cellSource of cellSources) {
         console.log("Calculate:" + cellSource);
         await executeCode(cellSource);
     }
