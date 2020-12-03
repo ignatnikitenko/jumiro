@@ -47,7 +47,6 @@ async function getCellSources() {
             .map(widget => widget.text)
             .sort()
             .flatMap(code => prepareSource(code))
-            .join('\n')
         );
 }
 
@@ -58,7 +57,8 @@ function prepareSource(source) {
         .split("<br />")
         .flatMap(str => str.split("</p><p>"))
         .flatMap(str => str.replace("<p>","").replace("</p>", ""))
-        .filter(str => str.length > 0);
+        .filter(str => str.length > 0)
+        .join('\n')
 }
 
 /*
