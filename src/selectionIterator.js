@@ -184,16 +184,15 @@ async function getCellSources() {
     return miro.board.widgets.get()
         .then(widgets => widgets
             .filter(widget => widget.type === "TEXT" && widget.text.includes("#IN["))
-            // .map(widget => prepareSource(widget.text))
-            .map(widget => widget.plainText)
+            .map(widget => prepareSource(widget.text))
             .sort()
         );
 }
 
 function prepareSource(source) {
     return source.replace(/&#(\d+);/g, function(match, dec) { return String.fromCharCode(dec);})
-        .replaceAll("</p><p>","\n")
-        .replaceAll("<br />", "\n")
+        .replaceAll("</p><p>","↵")
+        .replaceAll("<br />", "↵")
         .replace("<p>","")
         .replace("</p>", "");
 }
