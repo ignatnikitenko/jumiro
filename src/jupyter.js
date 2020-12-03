@@ -110,7 +110,7 @@ function showInput(input) {
 }
 
 function processOutput(name, text) {
-    console.log("output:" + name + ":" + text);
+
 
 }
 
@@ -180,7 +180,10 @@ async function executeCode(code, stdoutResultFunc) {
                 showInput(data.content.code);
                 break;
             case 'stream':
-                processOutput(data.content.name, data.content.text);
+                console.log("output:" + data.content.name + ":" + data.content.text);
+                if (data.content.name === "stdout") {
+                    stdoutResultFunc.call(data.content.text)
+                }
                 break;
             case 'execute_reply':
                 showReply(data.content.status);

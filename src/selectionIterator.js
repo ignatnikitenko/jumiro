@@ -12,8 +12,7 @@ async function createImageWidget(settings, imageName) {
 async function createStickerWidget(text) {
     return miro.board.widgets.create({
         type: 'sticker',
-        text: text,
-        meta: { jupyterOutput: true }
+        text: text
     })
 }
 
