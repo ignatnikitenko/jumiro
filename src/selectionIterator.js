@@ -166,7 +166,7 @@ async function createImageWidget(settings, imageName) {
 }
 
 async function createNotebook(settings) {
-    await cellSources = getCellSources();
+    let cellSources = await getCellSources();
     for (let cellSource in cellSources) {
         console.log("Calculate:" + cellSource);
         await getKernelSpecs(cellSource);
